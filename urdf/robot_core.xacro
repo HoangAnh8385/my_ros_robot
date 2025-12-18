@@ -1,12 +1,22 @@
 <?xml version="1.0"?>
-<robot xmlns:xacro="http://www.ros.org/wiki/xacro" >
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="my_robot">
 
     <xacro:include filename="inertial_macros.xacro"/>
+    <!-- Khung xe-->
+    <xacro:property name="chassis_length" value="0.325"/> 
+    <xacro:property name="chassis_width"  value="0.385"/> 
+    <xacro:property name="chassis_height" value="0.15"/>  
+    <xacro:property name="chassis_mass"   value="2.0"/>   
+    <!-- Bánh xe-->
+    <xacro:property name="wheel_radius" value="0.05"/> 
+    <xacro:property name="wheel_width"  value="0.04"/> 
+    <xacro:property name="wheel_mass"   value="0.2"/>
+
+    <xacro:property name="wheel_track" value="0.44"/> 
+    <xacro:property name="wheel_base"  value="0.325"/> 
 
     <material name="white"><color rgba="1 1 1 1" /></material>
-    <material name="orange"><color rgba="1 0.3 0.1 1"/></material>
-    <material name="blue"><color rgba="0.2 0.2 1 1"/></material>
-    <material name="black"><color rgba="0 0 0 1"/></material>
+    <material name="blue"><color rgba="0 0 1 1"/></material>
     <material name="red"><color rgba="1 0 0 1"/></material>
 
     <link name="base_link"></link>
@@ -14,46 +24,45 @@
     <joint name="chassis_joint" type="fixed">
         <parent link="base_link"/>
         <child link="chassis"/>
-        <origin xyz="-0.1 0 0"/>
+        <origin xyz="0 0 ${wheel_radius}"/> 
     </joint>
 
     <link name="chassis">
         <visual>
-            <origin xyz="0.15 0 0.075"/>
+            <origin xyz="0 0 ${chassis_height/2}"/>
             <geometry>
-                <box size="0.3 0.3 0.15"/>
+                <box size="${chassis_length} ${chassis_width} ${chassis_height}"/>
             </geometry>
-            <material name="white"/>
-        </visual>
+            <material name="red"/> </visual>
         <collision>
-            <origin xyz="0.15 0 0.075"/>
+            <origin xyz="0 0 ${chassis_height/2}"/>
             <geometry>
-                <box size="0.3 0.3 0.15"/>
+                <box size="${chassis_length} ${chassis_width} ${chassis_height}"/>
             </geometry>
         </collision>
-        <xacro:inertial_box mass="0.5" x="0.3" y="0.3" z="0.15">
-            <origin xyz="0.15 0 0.075" rpy="0 0 0"/>
+        <xacro:inertial_box mass="${chassis_mass}" x="${chassis_length}" y="${chassis_width}" z="${chassis_height}">
+            <origin xyz="0 0 ${chassis_height/2}" rpy="0 0 0"/>
         </xacro:inertial_box>
     </link>
     
     <gazebo reference="chassis">
-        <material>Gazebo/White</material>
+        <material>Gazebo/Red</material>
     </gazebo>
 
     <xacro:macro name="wheel" params="prefix x_reflect y_reflect">
         <link name="${prefix}_wheel">
             <visual>
                 <geometry>
-                    <cylinder radius="0.05" length="0.04"/>
+                    <cylinder radius="${wheel_radius}" length="${wheel_width}"/>
                 </geometry>
                 <material name="blue"/>
             </visual>
             <collision>
                 <geometry>
-                    <cylinder radius="0.05" length="0.04"/>
+                    <cylinder radius="${wheel_radius}" length="${wheel_width}"/>
                 </geometry>
             </collision>
-            <xacro:inertial_cylinder mass="0.1" length="0.04" radius="0.05">
+            <xacro:inertial_cylinder mass="${wheel_mass}" length="${wheel_width}" radius="${wheel_radius}">
                 <origin xyz="0 0 0" rpy="0 0 0"/>
             </xacro:inertial_cylinder>
         </link>
@@ -61,21 +70,23 @@
         <joint name="${prefix}_wheel_joint" type="continuous">
             <parent link="base_link"/>
             <child link="${prefix}_wheel"/>
-            <origin xyz="${x_reflect*0.1} ${y_reflect*0.175} 0" rpy="-${pi/2} 0 0"/>
+            
+            <origin xyz="${x_reflect * wheel_base / 2} ${y_reflect * wheel_track / 2} ${wheel_radius}" 
+                    rpy="-${pi/2} 0 0"/>
             <axis xyz="0 0 1"/>
         </joint>
 
         <gazebo reference="${prefix}_wheel">
             <material>Gazebo/Blue</material>
-            <mu1>0.2</mu1>
-            <mu2>0.4</mu2>
+            <mu1>0.5</mu1>
+            <mu2>0.5</mu2>
         </gazebo>
     </xacro:macro>
 
-    <xacro:wheel prefix="front_left" x_reflect="1" y_reflect="1" />
-    <xacro:wheel prefix="front_right" x_reflect="1" y_reflect="-1" />
-    <xacro:wheel prefix="rear_left" x_reflect="-1" y_reflect="1" />
-    <xacro:wheel prefix="rear_right" x_reflect="-1" y_reflect="-1" />
-
+    <xacro:wheel prefix="front_left"  x_reflect="1"  y_reflect="1" />
+    <xacro:wheel prefix="front_right" x_reflect="1"  y_reflect="-1" />
+    
+    <xacro:wheel prefix="rear_left"   x_reflect="-1" y_reflect="1" />
+    <xacro:wheel prefix="rear_right"  x_reflect="-1" y_reflect="-1" />
 
 </robot>
