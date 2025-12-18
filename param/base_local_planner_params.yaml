@@ -1,0 +1,37 @@
+TrajectoryPlannerROS:
+  # --- 1. Cấu hình Robot Holonomic (Mecanum) ---
+  # Đổi thành true để cho phép đi ngang
+  holonomic_robot: true 
+
+  # --- 2. Tốc độ trục X (Tiến/Lùi) ---
+  max_vel_x: 0.5
+  min_vel_x: 0.1
+
+  # --- 3. Tốc độ trục Y (Đi ngang) - CHỈ DÀNH CHO MECANUM ---
+  # Bạn cần thêm đoạn này vào robot mới biết tốc độ đi ngang
+  max_vel_y: 0.5
+  min_vel_y: -0.5  # Phải có số âm để đi sang phải/trái
+
+  # --- 4. Tốc độ Xoay (Theta) ---
+  max_vel_theta: 1.5           # Tốc độ xoay tối đa
+  min_in_place_vel_theta: 0.6  # Tốc độ xoay tại chỗ tối thiểu (để không bị ì)
+  
+  # --- 5. Gia tốc (Độ bốc của xe) ---
+  acc_lim_x: 2.5
+  acc_lim_y: 2.5  # Gia tốc ngang (quan trọng cho Mecanum)
+  acc_lim_theta: 3.5
+
+  # --- 6. Cấu hình đích đến (Dung sai) ---
+  yaw_goal_tolerance: 0.3      # Lệch góc 0.3 rad (~17 độ) là chấp nhận
+  xy_goal_tolerance: 0.15      # Lệch vị trí 15cm là chấp nhận
+  latch_xy_goal_tolerance: true # Đến nơi là chốt, không xoay nữa
+
+  # --- 7. Cấu hình Tránh vật cản (Auto Avoidance) ---
+  # Để robot chịu khó luồn lách (như bạn yêu cầu lúc nãy)
+  pdist_scale: 0.6    # Độ bám đường (Thấp xuống để dám tách làn)
+  gdist_scale: 0.8    # Độ khát khao về đích (Cao lên)
+  heading_lookahead: 0.325
+  
+  # Các thông số phụ trợ khác (giữ nguyên mặc định hoặc thêm nếu cần)
+  meter_scoring: true
+  dwa: true # Dùng thuật toán DWA (tốt hơn cho Mecanum)

@@ -1,0 +1,8 @@
+global_costmap:
+  # File này quy định bản đồ TỔNG THỂ để robot tìm đường đi dài
+  global_frame: map
+  robot_base_frame: base_link
+  update_frequency: 1.0
+  publish_frequency: 1.0
+  static_map: true
+  resolution: 0.05

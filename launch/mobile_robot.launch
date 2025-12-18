@@ -1,4 +1,4 @@
-<?xml version="1.0"?>
+<!-- <?xml version="1.0"?>
 <launch>
 
   <param name="robot_description" command="$(find xacro)/xacro '$(find ros_mobile_robot)/urdf/mobile_robot.urdf.xacro'" />
@@ -14,4 +14,4 @@
   
   <node name="rviz" pkg="rviz" type="rviz" />
 
-</launch>
+</launch> -->
