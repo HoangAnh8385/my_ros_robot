@@ -1,37 +1,34 @@
 TrajectoryPlannerROS:
-  # --- 1. Cấu hình Robot Holonomic (Mecanum) ---
-  # Đổi thành true để cho phép đi ngang
-  holonomic_robot: true 
+  # --- 1. Cấu hình Robot Không đa hướng (Bánh thường) ---
+  holonomic_robot: false 
 
   # --- 2. Tốc độ trục X (Tiến/Lùi) ---
-  max_vel_x: 0.5
-  min_vel_x: 0.1
+  max_vel_x: 20.0       # Tốc độ cực đại (72km/h)
+  min_vel_x: 1.5        # Tăng tốc độ tối thiểu để thắng ma sát nhanh hơn
 
-  # --- 3. Tốc độ trục Y (Đi ngang) - CHỈ DÀNH CHO MECANUM ---
-  # Bạn cần thêm đoạn này vào robot mới biết tốc độ đi ngang
-  max_vel_y: 0.5
-  min_vel_y: -0.5  # Phải có số âm để đi sang phải/trái
+  # --- 3. Tốc độ trục Y (Đi ngang) ---
+  max_vel_y: 0.0
+  min_vel_y: 0.0
+  acc_lim_y: 0.0
 
   # --- 4. Tốc độ Xoay (Theta) ---
-  max_vel_theta: 1.5           # Tốc độ xoay tối đa
-  min_in_place_vel_theta: 0.6  # Tốc độ xoay tại chỗ tối thiểu (để không bị ì)
+  max_vel_theta: 6.0    # Xoay cực nhanh
+  min_in_place_vel_theta: 0.6
   
-  # --- 5. Gia tốc (Độ bốc của xe) ---
-  acc_lim_x: 2.5
-  acc_lim_y: 2.5  # Gia tốc ngang (quan trọng cho Mecanum)
-  acc_lim_theta: 3.5
+  # --- 5. Gia tốc (Phải tăng mạnh để đạt tốc độ cao) ---
+  acc_lim_x: 10.0       # Đẩy gia tốc lên rất cao để xe vọt đi ngay lập tức
+  acc_lim_theta: 5.0
 
   # --- 6. Cấu hình đích đến (Dung sai) ---
-  yaw_goal_tolerance: 0.3      # Lệch góc 0.3 rad (~17 độ) là chấp nhận
-  xy_goal_tolerance: 0.15      # Lệch vị trí 15cm là chấp nhận
-  latch_xy_goal_tolerance: true # Đến nơi là chốt, không xoay nữa
+  # Tốc độ cao thì nên để sai số lớn một chút để xe dễ dừng, tránh bị quá đà rồi lùi lại liên tục
+  yaw_goal_tolerance: 0.2      
+  xy_goal_tolerance: 0.3      
+  latch_xy_goal_tolerance: true 
 
-  # --- 7. Cấu hình Tránh vật cản (Auto Avoidance) ---
-  # Để robot chịu khó luồn lách (như bạn yêu cầu lúc nãy)
-  pdist_scale: 0.6    # Độ bám đường (Thấp xuống để dám tách làn)
-  gdist_scale: 0.8    # Độ khát khao về đích (Cao lên)
+  # --- 7. Cấu hình Quỹ đạo ---
+  pdist_scale: 0.6      # Giảm bớt để robot không quá "căng thẳng" việc bám vạch khi chạy nhanh
+  gdist_scale: 0.8      # Tăng để nó ưu tiên lao về phía đích nhanh nhất
   heading_lookahead: 0.325
   
-  # Các thông số phụ trợ khác (giữ nguyên mặc định hoặc thêm nếu cần)
   meter_scoring: true
-  dwa: true # Dùng thuật toán DWA (tốt hơn cho Mecanum)
+  dwa: true

@@ -8,8 +8,8 @@
     <xacro:property name="chassis_height" value="0.15"/>  
     <xacro:property name="chassis_mass"   value="2.0"/>   
     <!-- Bánh xe-->
-    <xacro:property name="wheel_radius" value="0.05"/> 
-    <xacro:property name="wheel_width"  value="0.04"/> 
+    <xacro:property name="wheel_radius" value="0.03"/> 
+    <xacro:property name="wheel_width"  value="0.026"/> 
     <xacro:property name="wheel_mass"   value="0.2"/>
 
     <xacro:property name="wheel_track" value="0.44"/> 
